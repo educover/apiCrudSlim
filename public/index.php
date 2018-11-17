@@ -32,6 +32,9 @@ require __DIR__ . '/../src/routes.php';
 $app->run();
 
 
+
+
+
 //Conexxión a BD
 function getConnection(){
     $dbhost="127.0.0.1";
@@ -43,8 +46,8 @@ function getConnection(){
     return $dbh;
 }
 
-//Obtener Prueba
-function obtenerCrud($response){
+//Obtener Crud
+function obtenerCrud(){
     $sql = "SELECT * FROM crud";
     try{
         $stmt = getConnection()->query($sql);
@@ -55,6 +58,27 @@ function obtenerCrud($response){
     } catch (PDOException $e){
         echo '{"error":{"text":'. $e->getMessage() .'}}';
     }
+}
+
+//Insertar Usuario
+
+
+
+
+function insertarUsuario(ServerRequestInterface $request, ResponseInterface $response){
+        
+    $json = $request->getBody();
+        $data = decode($json);
+        $sql = "INSERT INTO crud (nombre, telefono, direccion, fechaNacimiento) VALUES ('pepe', 'eee', 'dddddd', 'ssse');";
+        try{
+            $stmt = getConnection()->query($sql);
+            $usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $db = null;
+    
+            //return json_encode($usuarios);
+        } catch (PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+        }
 }
 
 header('Content-type: application/json');
