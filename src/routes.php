@@ -3,6 +3,10 @@
 use Slim\Http\Request;
 use Slim\Http\Response;
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
+
+
 // Routes
 
 $app->get('/[{name}]', function (Request $request, Response $response, array $args) {
@@ -13,7 +17,12 @@ $app->get('/[{name}]', function (Request $request, Response $response, array $ar
     return $this->renderer->render($response, 'index.phtml', $args);
 });
 
+
+
 $app->group('/api', function() use($app){
     $app->get('/prueba','obtenerCrud');
+    $app->post('/insertar', 'insertarUsuario');
+    
     //$app->
 });
+
