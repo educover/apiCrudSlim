@@ -63,6 +63,8 @@ function obtenerCrud(){
 //Insertar Usuario
 
 
+use Psr\Http\Message\ServerRequestInterface;
+use Psr\Http\Message\ResponseInterface;
 
 
 function insertarUsuario(ServerRequestInterface $request, ResponseInterface $response){
