@@ -68,10 +68,9 @@ use Psr\Http\Message\ResponseInterface;
 
 
 function insertarUsuario(ServerRequestInterface $request, ResponseInterface $response){
-        
-    $json = $request->getBody();
-        $data = decode($json);
-        $sql = "INSERT INTO crud (nombre, telefono, direccion, fechaNacimiento) VALUES ('pepe', 'eee', 'dddddd', 'ssse');";
+    $parsedBody = $request->getParsedBody();
+        $data = json_decode(json_encode($parsedBody),true);
+        $sql = "INSERT INTO crud (nombre, telefono, direccion, fechaNacimiento) VALUES ('{$data->name}', 'eee', 'dddddd', '');";
         try{
             $stmt = getConnection()->query($sql);
             $usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
@@ -83,6 +82,7 @@ function insertarUsuario(ServerRequestInterface $request, ResponseInterface $res
         }
 }
 
-header('Content-type: application/json');
+header('Content-type: application/x-www-form-urlencoded');
 header("Access-Control-Allow-Origin: *");
+header("Access-Control-Allow-Headers: *");
 ob_end_flush();
