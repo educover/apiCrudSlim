@@ -69,16 +69,36 @@ use Psr\Http\Message\ResponseInterface;
 
 function insertarUsuario(ServerRequestInterface $request, ResponseInterface $response){
     $parsedBody = $request->getParsedBody();
-        $data = json_decode(json_encode($parsedBody),true);
-        $sql = "INSERT INTO crud (nombre, telefono, direccion, fechaNacimiento) VALUES ('{$data->name}', 'eee', 'dddddd', '');";
+        $data = json_decode(json_encode($parsedBody));
+        $sql = "INSERT INTO crud (nombre, telefono, direccion, fechaNacimiento) VALUES ('{$data->name}', '{$data->phone}', '{$data->direcction}', '{$data->birthdate}');";
         try{
             $stmt = getConnection()->query($sql);
-            $usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
             $db = null;
-    
+            return $response->withStatus(200);
             //return json_encode($usuarios);
         } catch (PDOException $e){
             echo '{"error":{"text":'. $e->getMessage() .'}}';
+            return $response('Unauthorized', 500);
+        }
+}
+
+
+function login(ServerRequestInterface $request, ResponseInterface $response){
+    $parsedBody = $request->getParsedBody();
+        $data = json_decode(json_encode($parsedBody));
+        $sql = "SELECT * FROM admin WHERE nombre='{$data->name}';";
+        try{
+            $stmt = getConnection()->query($sql);
+            $usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
+           
+                return json_encode($usuarios);
+            
+            $db = null;
+            
+            //return json_encode($usuarios);
+        } catch (PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+            return $response('Unauthorized', 500);
         }
 }
 
