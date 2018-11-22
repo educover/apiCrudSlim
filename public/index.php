@@ -86,12 +86,30 @@ function insertarUsuario(ServerRequestInterface $request, ResponseInterface $res
 function login(ServerRequestInterface $request, ResponseInterface $response){
     $parsedBody = $request->getParsedBody();
         $data = json_decode(json_encode($parsedBody));
-        $sql = "SELECT * FROM admin WHERE nombre='{$data->name}';";
+        $sql = "SELECT * FROM admin WHERE nombre='{$data->name}' AND pass='{$data->pass}';";
         try{
             $stmt = getConnection()->query($sql);
             $usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
+            return json_encode($usuarios);
+
+            $db = null;
+            
+            //return json_encode($usuarios);
+        } catch (PDOException $e){
+            echo '{"error":{"text":'. $e->getMessage() .'}}';
+            return $response('Unauthorized', 500);
+        }
+}
+
+function delete(ServerRequestInterface $request, ResponseInterface $response){
+    $parsedBody = $request->getParsedBody();
+    $data = json_decode(json_encode($parsedBody));
+        $sql = "DELETE FROM crud WHERE id='{$data->id}';";
+        try{
+            $stmt = getConnection()->query($sql);
+            //$usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
            
-                return json_encode($usuarios);
+                //return json_encode($usuarios);
             
             $db = null;
             
@@ -102,7 +120,12 @@ function login(ServerRequestInterface $request, ResponseInterface $response){
         }
 }
 
+
+
+
 header('Content-type: application/x-www-form-urlencoded');
+header('Content-type: application/json');
+header('Access-Control-Allow-Methods: *');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
 ob_end_flush();

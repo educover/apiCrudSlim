@@ -13,6 +13,7 @@ use Slim\Http\Response;
 
 $app->group('/api', function() use($app){
     $app->get('/prueba','obtenerCrud');
+    $app->get('/delete', 'delete');
     $app->post('/insertar', 'insertarUsuario');
     $app->post('/login', 'login');
     //$app->
