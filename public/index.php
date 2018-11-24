@@ -107,9 +107,9 @@ function delete(ServerRequestInterface $request, ResponseInterface $response){
         $sql = "DELETE FROM crud WHERE id='{$data->id}';";
         try{
             $stmt = getConnection()->query($sql);
-            //$usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
+            $usuarios = $stmt->fetchAll(PDO::FETCH_OBJ);
            
-                //return json_encode($usuarios);
+                return json_encode($usuarios);
             
             $db = null;
             
@@ -124,8 +124,7 @@ function delete(ServerRequestInterface $request, ResponseInterface $response){
 
 
 header('Content-type: application/x-www-form-urlencoded');
-header('Content-type: application/json');
-header('Access-Control-Allow-Methods: *');
 header("Access-Control-Allow-Origin: *");
 header("Access-Control-Allow-Headers: *");
+header("Access-Control-Allow-Credentials: *");
 ob_end_flush();
